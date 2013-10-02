@@ -17,7 +17,7 @@ module CommunityExtensions
     UNIT_INCHES      = 0
   
     Sketchup::require File.join(PLUGIN_PATH, 'importer')
-    #Sketchup::require File.join(PLUGIN_PATH, 'exporter')
+    Sketchup::require File.join(PLUGIN_PATH, 'exporter')
 
   end # module PLY
 end # module CommunityExtensions

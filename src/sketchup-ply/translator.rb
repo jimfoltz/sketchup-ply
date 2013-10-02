@@ -52,14 +52,14 @@ module CommunityExtensions
       STATE_EXPECT_UTF8_BOM    = 10 # Looking for UTF-8 BOM
       
       TOKEN_WHITESPACE     = /\s/
-      TOKEN_CONCAT         = ?+
-      TOKEN_QUOTE          = ?"
-      TOKEN_EQUAL          = ?=
-      TOKEN_END            = ?;
+      TOKEN_CONCAT         = 43 # +
+      TOKEN_QUOTE          = 34 # "
+      TOKEN_EQUAL          = 61 # =
+      TOKEN_END            = 59 # ;
       TOKEN_EOL            = /\n|\r/
-      TOKEN_COMMENT_START  = ?/
-      TOKEN_COMMENT_MULTI  = ?*
-      TOKEN_COMMENT_SINGLE = ?/
+      TOKEN_COMMENT_START  = 47 # /
+      TOKEN_COMMENT_MULTI  = 42 # *
+      TOKEN_COMMENT_SINGLE = 47 # /
       
       class ParseError < StandardError; end
       
@@ -81,8 +81,8 @@ module CommunityExtensions
           unless options.is_a?(Hash)
             raise ArgumentError, 'Second argument must be Nil or a Hash.'
           end
-          @path  = options[:custom_path]
-          @debug = options[:debug]
+          @path  = options[:custom_path] unless options[:custom_path].nil?
+          @debug = options[:debug] unless options[:debug].nil?
         end
         @strings = parse(filename, @path)
       end
@@ -152,7 +152,8 @@ module CommunityExtensions
         # If no path has been given it'll revert back to the Resource folder in
         # SketchUp, like LanguageHandler does.
         if custom_path
-          full_file_path = File.join(File.expand_path(custom_path), Sketchup.get_locale, filename)
+          path = File.expand_path(custom_path)
+          full_file_path = File.join(path, Sketchup.get_locale, filename)
         else
           full_file_path = Sketchup.get_resource_path(filename)
         end
@@ -178,7 +179,13 @@ module CommunityExtensions
         last_line_break = nil
         line_pos = 0
         
-        File.open(full_file_path, 'r') { |file|
+        if Sketchup.version.split('.')[0].to_i < 14
+          read_flags = 'r'
+        else
+          read_flags = 'r:BOM|UTF-8'
+        end
+
+        File.open(full_file_path, read_flags) { |file|
           file.lineno = 1 # Line numbers must be manually tracked.
           file.each_byte { |byte|
             # Count line numbers and keep track of line position.
@@ -219,7 +226,6 @@ module CommunityExtensions
             # Process the current byte.
             # Note that White-space and EOL matches are done with regex and
             # therefore last in evaluation.
-            p state
             case state
             
             # Neutral state looking for the beginning of a key or comment.

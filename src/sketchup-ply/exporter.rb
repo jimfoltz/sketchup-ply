@@ -12,6 +12,11 @@ module CommunityExtensions
         'export_format' => PLY_ASCII,
         'export_units' => 'Model Units'
       }
+
+      def self.file_extension
+        'ply'
+      end
+
         model = Sketchup.active_model
         flist = []
         h = {}

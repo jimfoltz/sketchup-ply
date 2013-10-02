@@ -17,6 +17,12 @@ module CommunityExtensions
         'ply'
       end
 
+      def self.model_name
+        title = Sketchup.active_model.title
+        title = "Untitled-#{Time.now.to_i.to_s(16)}" if title.empty?
+        title
+      end
+
         model = Sketchup.active_model
         flist = []
         h = {}

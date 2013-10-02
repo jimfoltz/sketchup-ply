@@ -23,6 +23,14 @@ module CommunityExtensions
         title
       end
 
+      def self.select_export_file
+        template  = PLY.translate('%s file location')
+        file_name = "#{model_name()}.#{file_extension()}"
+        dlg_title = sprintf(template, file_name)
+        directory = nil
+        path = UI.savepanel(dlg_title, directory, file_name)
+      end
+
         model = Sketchup.active_model
         flist = []
         h = {}

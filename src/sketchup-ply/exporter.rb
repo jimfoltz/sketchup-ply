@@ -2,8 +2,16 @@ module CommunityExtensions
   module PLY
     module Exporter
 
+      PREF_KEY = 'CommunityExtensions\PLY\Exporter'.freeze
       def self.export
 
+      PLY_ASCII = 'ASCII'.freeze
+      PLY_BINARY = 'Binary'.freeze
+
+      OPTIONS = {
+        'export_format' => PLY_ASCII,
+        'export_units' => 'Model Units'
+      }
         model = Sketchup.active_model
         flist = []
         h = {}

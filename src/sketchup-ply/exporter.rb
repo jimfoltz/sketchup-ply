@@ -59,27 +59,28 @@ module CommunityExtensions
         }
         h = h.sort_by{|k, v| v}
 
-        File.open("C:/Users/Jim/tmp/ply-export.ply", 'w') {|f|
-          f.write("ply\n")
-          f.write("format ascii 1.0\n")
-          f.write("element vertex #{h.size}\n")
-          f.write("property float x\n")
-          f.write("property float y\n")
-          f.write("property float z\n")
-          f.write("element face #{flist.size}\n")
-          f.write("property list uint int vertex_indices\n")
-          f.write("end_header\n")
-          h.each do |vertex, index|
-            f.write(vertex.position.to_a.join(" "))
-            f.write("\n")
-          end
-          flist.each do |lst|
-            len = lst.length
-            f.write("#{len} ")
-            f.write(lst.join(' '))
-            f.write("\n")
-          end
-        }
+        file.write("ply\n")
+        file.write("format ascii 1.0\n")
+        file.write("comment SketchUp PLY Exporter\n")
+        file.write("comment Generated: #{Time.now}\n")
+        file.write("element vertex #{h.size}\n")
+        file.write("property float x\n")
+        file.write("property float y\n")
+        file.write("property float z\n")
+        file.write("element face #{flist.size}\n")
+        file.write("property list uint int vertex_indices\n")
+        file.write("end_header\n")
+        h.each do |vertex, index|
+          file.write(vertex.position.to_a.join(" "))
+          file.write("\n")
+        end
+        flist.each do |lst|
+          len = lst.length
+          file.write("#{len} ")
+          file.write(lst.join(' '))
+          file.write("\n")
+        end
+        file.close
 
       end # d export
 

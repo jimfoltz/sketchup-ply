@@ -31,6 +31,12 @@ module CommunityExtensions
         path = UI.savepanel(dlg_title, directory, file_name)
       end
 
+      def self.do_options
+        path = select_export_file
+        return if path.nil?
+        export(path)
+      end
+
         model = Sketchup.active_model
         flist = []
         h = {}

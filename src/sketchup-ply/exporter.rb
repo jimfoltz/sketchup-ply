@@ -86,7 +86,7 @@ module CommunityExtensions
 
       unless file_loaded?(__FILE__)
         UI.menu('File').add_item('Export PLY...', 17) {
-          export()
+          do_options()
         }
         file_loaded(__FILE__)
       end

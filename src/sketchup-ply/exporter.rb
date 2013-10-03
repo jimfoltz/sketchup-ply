@@ -3,7 +3,6 @@ module CommunityExtensions
     module Exporter
 
       PREF_KEY = 'CommunityExtensions\PLY\Exporter'.freeze
-      def self.export
 
       PLY_ASCII = 'ASCII'.freeze
       PLY_BINARY = 'Binary'.freeze
@@ -37,6 +36,8 @@ module CommunityExtensions
         export(path)
       end
 
+      def self.export(path, options = OPTIONS)
+        file = File.new(path , 'w')  
         model = Sketchup.active_model
         flist = []
         h = {}
